@@ -1,0 +1,109 @@
+---
+- name: create group
+  group: name=nagcmd state=present
+  tags:
+    - group
+
+- name: create and add user to group
+  user: name=nagios groups=nagcmd append=yes
+  tags:
+    - user_group
+
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: install dependencies
+  apt: name={{item}} state=present force=yes
+  with_items:
+  - build-essential
+  - libgd2-xpm-dev
+  - openssl
+  - libssl-dev
+  - xinetd
+  - apache2-utils
+  - unzip
+  tags:
+    - dependencies
+
+- name: download nagios source code
+  command: chdir={{ ansible_env.PWD }} curl -L -O {{ nagios_source_code_url }}
+  tags:
+    - source_code
+
+- name: extract file
+  unarchive: src={{ ansible_env.PWD }}/nagios-{{ nagios_version }}.tar.gz dest={{ ansible_env.PWD }} copy=no
+  tags:
+    - extract
+
+- name: configure nagios
+  command: chdir={{ ansible_env.PWD }}/nagios-{{ nagios_version }} ./configure --with-nagios-group=nagios --with-command-group=nagios
+  tags:
+    - configure
+
+- name: compile and install nagios
+  command: bash -c "cd {{ ansible_env.PWD }}/nagios-{{ nagios_version }} && make clean; make all; make install; make install-commandmode; make install-init; make install-config; /usr/bin/install -c -m 644 sample-config/httpd.conf /etc/apache2/sites-available/nagios.conf"
+  tags:
+    - compile
+
+- name: add web server user to group
+  command: bash -c "usermod -G nagcmd www-data"
+  tags:
+    - web_server
+
+- name: download nagios plugin 
+  command: chdir={{ ansible_env.PWD }} curl -L -O {{ nagios_plugin_url }}
+  tags:
+    - nagios_plugin
+
+- name: extract nagios plugin file
+  unarchive: src={{ ansible_env.PWD }}/nagios-plugins-{{ nagios_plugin_version }}.tar.gz dest={{ ansible_env.PWD }} copy=no
+  tags:
+    - extract_nagios_plugin
+
+- name: configure nagios-plugins
+  command: chdir={{ ansible_env.PWD }}/nagios-plugins-{{ nagios_plugin_version }} ./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl
+  tags:
+    - configure_nagios_plugins
+
+- name: compile and install nagios plugin
+  command: chdir={{ ansible_env.PWD }}/nagios-plugins-{{ nagios_plugin_version }} {{ item }}
+  with_items:
+    - make
+    - make install
+  tags:
+    - compile_nagios_plugins
+
+- name: download nrpe 
+  command: chdir={{ ansible_env.PWD }} curl -L -O {{ nrpe_url }}
+  tags:
+    - nrpe
+
+- name: extract nrpe file
+  unarchive: src={{ ansible_env.PWD }}/nrpe-{{ nrpe_version }}.tar.gz dest={{ ansible_env.PWD }} copy=no
+  tags:
+    - extract_nrpe
+
+- name: configure nrpe
+  command: chdir={{ ansible_env.PWD }}/nrpe-{{ nrpe_version }} ./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+  tags:
+    - configure_nrpe
+
+- name: compile and install nrpe
+  command: chdir={{ ansible_env.PWD }}/nrpe-{{ nrpe_version }} {{ item }}
+  with_items:
+    - make all
+    - make install
+    - make install-xinetd
+    - make install-daemon-config
+  tags:
+    - compile_nrpe
+
+- name: add nagios server ip address
+  lineinfile: dest=/etc/xinetd.d/nrpe regexp="only_from" line="        only_from = 127.0.0.1 {{ nagios_private_ip }}"
+  tags:
+    - server_ip_address
+
+- name: restart xinetd
+  service: name=xinetd state=restarted enabled=yes
+  tags:
+    - server_ip_address

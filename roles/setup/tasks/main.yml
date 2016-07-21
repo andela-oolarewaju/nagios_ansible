@@ -1,0 +1,71 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: check if apache2 is installed
+  command: bash -c "dpkg --get-selections | grep apache"
+  register: apache2_installed
+  ignore_errors: true
+  tags:
+    - apache_setup
+
+
+- name: install apache2
+  apt: name={{item}} state=present force=yes
+  when: apache2_installed|failed
+  with_items:
+  - curl
+  - apache2
+  tags:
+    - apache_setup
+
+- name: check if mysql is installed
+  command: bash -c "dpkg --get-selections | grep mysql"
+  register: mysql_installed
+  ignore_errors: true
+  tags:
+    - sql_setup
+
+
+- name: install mysql and php5
+  apt: name={{item}} state=present force=yes
+  when: mysql_installed|failed
+  with_items:
+  - mysql-server
+  - php5-mysql
+  tags:
+    - sql_setup
+
+- name: create mysql dir structure and secure mysql
+  command: bash -c "mysql_install_db"
+  when: mysql_installed|failed
+  tags:
+    - sql_setup
+
+- name: check if my php is installed
+  command: bash -c "dpkg --get-selections | grep php"
+  register: php_installed
+  ignore_errors: true
+  tags:
+    - php_setup
+
+
+- name: install php5
+  apt: name={{item}} state=present force=yes
+  when: php_installed|failed
+  with_items:
+  - php5
+  - libapache2-mod-php5
+  - php5-mcrypt
+  tags:
+    - php_setup
+
+- name: copy apache config file
+  template: src=dir.conf dest=/etc/apache2/mods-enabled/dir.conf owner=root mode=0750 force=yes
+  tags:
+    - apache_setup 
+
+- name: Start apache2
+  service: name=apache2 state=started enabled=yes 
+  tags:
+    - apache_setup
