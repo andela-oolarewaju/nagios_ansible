@@ -1,0 +1,11 @@
+---
+- hosts: server_ip
+  user: ubuntu
+  become: yes
+  become_method: sudo
+  vars_files:
+    - "vars.yml"
+  roles:
+  - setup
+  - nagios
+  - configurenagios
