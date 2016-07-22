@@ -25,9 +25,7 @@ Feature: Setup LAMP as Nagios Prerequisite
   Scenario:
     When I install nagios dependencies
     Then it should be successful
-    When I download nagios source code
-    Then it should be successful
-    And I extract nagios source code
+    When I download  and extract nagios source code
     Then it should be successful
 
   Scenario:
@@ -43,9 +41,7 @@ Feature: Setup LAMP as Nagios Prerequisite
     Then it should be successful
 
   Scenario:
-    When I download nagios plugins
-    Then it should be successful
-    And I extract nagios plugins
+    When I download and extract nagios plugin file
     Then it should be successful
 
   Scenario:
@@ -57,9 +53,7 @@ Feature: Setup LAMP as Nagios Prerequisite
     Then it should be successful
 
   Scenario:
-    When I download nrpe
-    Then it should be successful
-    And I extract nrpe
+    When I download and extract nrpe file
     Then it should be successful
 
   Scenario:
@@ -87,6 +81,7 @@ Feature: Setup LAMP as Nagios Prerequisite
   Scenario:
     When I add email to contacts config
     Then it should be successful
+    And email should exist
 
   Scenario:
     When I add check_nrpe command
