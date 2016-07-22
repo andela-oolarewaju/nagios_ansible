@@ -30,10 +30,6 @@
   tags:
     - set_email
 
-- name: check if email is set
-  command: bash -c "cat /usr/local/nagios/etc/objects/contacts.cfg | grep email"
-  register: email_set
-
 - name: add check_nrpe command
   blockinfile:
     dest: /usr/local/nagios/etc/objects/commands.cfg
@@ -53,18 +49,18 @@
   register: passlib_installed
   ignore_errors: True
   tags:
-    - passlib_setup
+    - password_setup
 
 - name: Install python passlib
   apt: name=python-passlib state=present force=yes
   when: passlib_installed|failed
   tags:
-    - passlib_setup
+    - password_setup
 
 - name: create nagios user and password
   htpasswd: path=/usr/local/nagios/etc/htpasswd.users name=nagiosadmin password={{ nagios_password }}
   tags:
-    - password
+    - password_setup
 
 - name: create symlink for nagios.conf and start nagios on boot
   file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
@@ -79,4 +75,5 @@
   with_items:
     - nagios
     - apache2
-
+  tags:
+    - password_setup

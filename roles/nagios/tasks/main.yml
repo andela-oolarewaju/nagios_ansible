@@ -25,15 +25,10 @@
   tags:
     - dependencies
 
-- name: download nagios source code
-  command: chdir={{ ansible_env.PWD }} curl -L -O {{ nagios_source_code_url }}
+- name: download and extract nagios source code
+  unarchive: src={{ nagios_source_code_url }} dest={{ ansible_env.PWD }} copy=no
   tags:
     - source_code
-
-- name: extract file
-  unarchive: src={{ ansible_env.PWD }}/nagios-{{ nagios_version }}.tar.gz dest={{ ansible_env.PWD }} copy=no
-  tags:
-    - extract
 
 - name: configure nagios
   command: chdir={{ ansible_env.PWD }}/nagios-{{ nagios_version }} ./configure --with-nagios-group=nagios --with-command-group=nagios
@@ -50,15 +45,10 @@
   tags:
     - web_server
 
-- name: download nagios plugin 
-  command: chdir={{ ansible_env.PWD }} curl -L -O {{ nagios_plugin_url }}
+- name: download and extract nagios plugin file
+  unarchive: src={{ nagios_plugin_url }} dest={{ ansible_env.PWD }} copy=no
   tags:
     - nagios_plugin
-
-- name: extract nagios plugin file
-  unarchive: src={{ ansible_env.PWD }}/nagios-plugins-{{ nagios_plugin_version }}.tar.gz dest={{ ansible_env.PWD }} copy=no
-  tags:
-    - extract_nagios_plugin
 
 - name: configure nagios-plugins
   command: chdir={{ ansible_env.PWD }}/nagios-plugins-{{ nagios_plugin_version }} ./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl
@@ -73,15 +63,10 @@
   tags:
     - compile_nagios_plugins
 
-- name: download nrpe 
-  command: chdir={{ ansible_env.PWD }} curl -L -O {{ nrpe_url }}
+- name: download and extract nrpe file
+  unarchive: src={{ nrpe_url }} dest={{ ansible_env.PWD }} copy=no
   tags:
     - nrpe
-
-- name: extract nrpe file
-  unarchive: src={{ ansible_env.PWD }}/nrpe-{{ nrpe_version }}.tar.gz dest={{ ansible_env.PWD }} copy=no
-  tags:
-    - extract_nrpe
 
 - name: configure nrpe
   command: chdir={{ ansible_env.PWD }}/nrpe-{{ nrpe_version }} ./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu

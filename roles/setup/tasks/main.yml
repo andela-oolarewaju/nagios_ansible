@@ -1,6 +1,8 @@
 ---
 - name: Update apt cache
   apt: update_cache=yes
+  tags:
+    - apache_setup
 
 - name: check if apache2 is installed
   command: bash -c "dpkg --get-selections | grep apache"
@@ -42,17 +44,8 @@
   tags:
     - sql_setup
 
-- name: check if my php is installed
-  command: bash -c "dpkg --get-selections | grep php"
-  register: php_installed
-  ignore_errors: true
-  tags:
-    - php_setup
-
-
 - name: install php5
   apt: name={{item}} state=present force=yes
-  when: php_installed|failed
   with_items:
   - php5
   - libapache2-mod-php5
