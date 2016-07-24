@@ -32,9 +32,9 @@ Replace the IP in the `inventory.ini` file with the public ip of your nagios ser
 Create a `vars.rb file in the `features/step_definitions/ directory and add the variables that our tests will need:
 
 ```
-PATHTOPRIVATEKEY: ""
-CONTACTEMAIL: ""
-AWSPUBDNS: ""
+PATHTOPRIVATEKEY = ""
+CONTACTEMAIL = ""
+AWSPUBDNS = ""
 ```
 
 Then run `cucumber features/install.feature`
