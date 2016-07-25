@@ -105,3 +105,12 @@ Feature: Setup LAMP as Nagios Prerequisite
   Scenario:
     When I create nagios user and password
     Then it should exist in password file
+
+  Scenario:
+    When I finish setting up nagios
+    Then Http metrics should exist
+    And Memory usage metrics should exist
+    And Netio metric should exist
+    And PING metric should exist
+    And SSH metric should exist
+    And Current Load metric should exist

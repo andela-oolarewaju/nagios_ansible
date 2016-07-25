@@ -1,0 +1,9 @@
+<td align=left valign=center class='statusEven'><a href='extinfo.cgi?type=1&host=newrelicserver' title='172.31.10.184'>newrelicserver</a></td>
+<td align=right valign=center>
+<td align='left' valign=center class='statusEven'><a href='extinfo.cgi?type=2&host=newrelicserver&service=Current+Load'>Current Load</a></td></tr>
+<td align='left' valign=center class='statusOdd'><a href='extinfo.cgi?type=2&host=newrelicserver&service=HTTP'>HTTP</a></td></tr>
+<td align='left' valign=center class='statusBGWARNING'><a href='extinfo.cgi?type=2&host=newrelicserver&service=Memory+usage'>Memory usage</a></td></tr>
+<td align='left' valign=center class='statusOdd'><a href='extinfo.cgi?type=2&host=newrelicserver&service=Network+IO'>Network IO</a></td></tr>
+<td align='left' valign=center class='statusEven'><a href='extinfo.cgi?type=2&host=newrelicserver&service=PING'>PING</a></td></tr>
+<td align='left' valign=center class='statusOdd'><a href='extinfo.cgi?type=2&host=newrelicserver&service=SSH'>SSH</a></td></tr>
+<td ALIGN=center valign=center><a href='extinfo.cgi?type=2&host=newrelicserver&service=SSH'><IMG SRC='/nagios/images/ndisabled.gif' border=0 WIDTH=20 HEIGHT=20 ALT='Notifications for this service have been disabled' TITLE='Notifications for this service have been disabled'></a></td></tr>

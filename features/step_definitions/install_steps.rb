@@ -222,3 +222,59 @@ Then(/^it should exist in password file$/) do
   expect(status.success?).to eq(true)
   expect(output).to match("nagiosadmin")
 end
+
+When(/^I finish setting up nagios$/) do
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'password_setup'"	
+  output, error, @status = Open3.capture3 "#{command}"
+end
+
+Then(/^Http metrics should exist$/) do
+  command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS}" && "curl -u nagiosadmin:#{NAGIOSPASSWORD} http://#{NAGIOSIP}/nagios/cgi-bin/status.cgi?host=#{HOST} | grep \"valign='center'>\" | grep \"HTTP\"" 
+  output, error, status = Open3.capture3 "#{command}"
+
+  expect(status.success?).to eq(true)
+  expect(output).to include("HTTP")
+end
+
+And(/^Memory usage metrics should exist$/) do
+  command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS}" && "curl -u nagiosadmin:#{NAGIOSPASSWORD} http://#{NAGIOSIP}/nagios/cgi-bin/status.cgi?host=#{HOST} | grep \"valign='center'>\" | grep \"Memory:\"" 
+  output, error, status = Open3.capture3 "#{command}"
+
+  expect(status.success?).to eq(true)
+  expect(output).to include("Memory:")
+end
+
+And(/^Netio metric should exist$/) do
+  command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS}" && "curl -u nagiosadmin:#{NAGIOSPASSWORD} http://#{NAGIOSIP}/nagios/cgi-bin/status.cgi?host=#{HOST} | grep \"valign='center'>\" | grep \"NETIO\"" 
+  output, error, status = Open3.capture3 "#{command}"
+
+  expect(status.success?).to eq(true)
+  expect(output).to include("NETIO")
+end
+
+And(/^PING metric should exist$/) do
+  command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS}" && "curl -u nagiosadmin:#{NAGIOSPASSWORD} http://#{NAGIOSIP}/nagios/cgi-bin/status.cgi?host=#{HOST} | grep \"valign='center'>\" | grep \"PING\"" 
+  output, error, status = Open3.capture3 "#{command}"
+
+  expect(status.success?).to eq(true)
+  expect(output).to include("PING")
+end
+
+And(/^SSH metric should exist$/) do
+  command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS}" && "curl -u nagiosadmin:#{NAGIOSPASSWORD} http://#{NAGIOSIP}/nagios/cgi-bin/status.cgi?host=#{HOST} | grep \"valign='center'>\" | grep \"SSH\"" 
+  output, error, status = Open3.capture3 "#{command}"
+
+  expect(status.success?).to eq(true)
+  expect(output).to include("SSH")
+end
+
+And(/^Current Load metric should exist$/) do
+  command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS}" && "curl -u nagiosadmin:#{NAGIOSPASSWORD} http://#{NAGIOSIP}/nagios/cgi-bin/status.cgi?host=#{HOST} | grep \"valign='center'>\" | grep \"load\"" 
+  output, error, status = Open3.capture3 "#{command}"
+
+  expect(status.success?).to eq(true)
+  expect(output).to include("load")
+end
+
+
+
