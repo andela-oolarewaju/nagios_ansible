@@ -25,7 +25,7 @@ monitored_server_address: ""
 
 This file **SHOULD NOT** be public
 
-Replace the IP in the `inventory.ini` file with the public ip of your nagios server
+Replace the IP and Path to private key in the `inventory.ini` file with the public ip and path to your private key of your nagios server
 
 **RUN** `ansible-playbook -i inventory.ini --private-key=PATH/TO/NAGIOS/SERVER/PRIVATE/KEY -u ubuntu playbook.main.yml` to run the scripts 
 
