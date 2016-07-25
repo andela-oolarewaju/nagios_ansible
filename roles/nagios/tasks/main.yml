@@ -63,10 +63,10 @@
   tags:
     - compile_nagios_plugins
 
-- name: download and extract nrpe file
-  unarchive: src={{ nrpe_url }} dest={{ ansible_env.PWD }} copy=no
-  tags:
-    - nrpe
+# - name: download and extract nrpe file
+#   unarchive: src={{ nrpe_url }} dest={{ ansible_env.PWD }} copy=no
+#   tags:
+#     - nrpe
 
 - name: configure nrpe
   command: chdir={{ ansible_env.PWD }}/nrpe-{{ nrpe_version }} ./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu

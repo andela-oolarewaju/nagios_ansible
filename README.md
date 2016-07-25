@@ -19,6 +19,8 @@ nagios_plugin_version: ""
 nrpe_version: ""
 email: ""
 nagios_password: ""
+hostfilename: ""
+monitored_server_address: ""
 ```
 
 This file **SHOULD NOT** be public

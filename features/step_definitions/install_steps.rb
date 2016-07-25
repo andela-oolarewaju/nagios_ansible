@@ -3,7 +3,7 @@ require_relative 'vars'
 
 #Apache scenerio
 When(/^I install Apache$/) do 
-	cmd = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'apache_setup'"
+	cmd = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'apache_setup'"
 
 	output, error, @status = Open3.capture3 "#{cmd}"
 end
@@ -30,7 +30,7 @@ end
 
 #SQL Scenario
 When(/^I install MySQL$/) do
-	command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'sql_setup'"
+	command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'sql_setup'"
   
   output, error, @status = Open3.capture3 "#{command}"
 end
@@ -45,93 +45,93 @@ end
 
 #PHP Scenario
 When(/^I install PHP$/) do
-	command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'php_setup'"
+	command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'php_setup'"
   
   output, error, @status = Open3.capture3 "#{command}"
 end
 
 #Nagios Scenario
 When(/^I create a group$/) do
-	command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'group'"
+	command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'group'"
 
 	output, error, @status = Open3.capture3 "#{command}"
 end
 
 And(/^I add a user to a group$/) do 
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'user_group'"
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'user_group'"
   
   output, error, @status = Open3.capture3 "#{command}"
 end
 
 When(/^I install nagios dependencies$/) do
-	command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'dependencies'"
+	command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'dependencies'"
   
   output, error, @status = Open3.capture3 "#{command}"
 end
 
 When(/^I download  and extract nagios source code$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'source_code'"
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'source_code'"
 
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I configure nagios$/) do 
-	command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'configure'"
+	command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'configure'"
 
   output, error, @status = Open3.capture3 "#{command}"
 end
 
 When(/^I compile nagios$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'compile'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'compile'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I add web server to group$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'web_server'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'web_server'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I download and extract nagios plugin file$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'nagios_plugin'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'nagios_plugin'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I configure nagios plugins$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'configure_nagios_plugins'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'configure_nagios_plugins'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I compile and install nagios plugins$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'compile_nagios_plugins'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'compile_nagios_plugins'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 
 When(/^I download and extract nrpe file$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'nrpe'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'nrpe'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I configure nrpe$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'configure_nrpe'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'configure_nrpe'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I compile and install nrpe$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'compile_nrpe'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'compile_nrpe'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
 When(/^I add server ip address$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'server_ip_address'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'server_ip_address'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
@@ -144,13 +144,13 @@ And(/^I restart xinetd service$/) do
   expect(output).to match("xinetd start/running,")
 end
 
-Given(/^I set config directory$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'set_config'"
+When(/^I set config directory$/) do
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'set_config'"
 
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
-And(/^config directory was set$/) do
+Then(/^config directory should be set$/) do
 	command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS} 'cat /usr/local/nagios/etc/nagios.cfg | grep cfg_dir=/usr/local/nagios/etc/servers'"
   output, error, status = Open3.capture3 "#{command}"
 
@@ -158,22 +158,14 @@ And(/^config directory was set$/) do
   expect(output).to match("cfg_dir=/usr/local/nagios/etc/servers")
 end
 
-When(/^I create server config directory$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'create_config_dir'"	
+When(/^I copy host config file$/) do
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'copy_host_config_file'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 
 
-And(/^server directory should exist$/) do
-	command = "ssh -i '#{PATHTOPRIVATEKEY}' #{AWSPUBDNS} 'ls /usr/local/nagios/etc/ | grep servers'"
-  output, error, status = Open3.capture3 "#{command}"
-
-  expect(status.success?).to eq(true)
-  expect(output).to match("servers")
-end
-
 When(/^I add email to contacts config$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'set_email'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'set_email'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end
@@ -187,13 +179,37 @@ And(/^email should exist$/) do
 end
 
 When(/^I add check_nrpe command$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'add_check_nrpe'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'add_check_nrpe'"	
   
   output, error, @status = Open3.capture3 "#{command}"
-end 
+end
+
+When(/^I add check_ping command$/) do
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'check_ping'"	
+  
+  output, error, @status = Open3.capture3 "#{command}"
+end
+
+When(/^I add check_http command$/) do
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'check_http'"	
+  
+  output, error, @status = Open3.capture3 "#{command}"
+end
+
+When(/^I add check_memory command$/) do
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'check_memory'"	
+  
+  output, error, @status = Open3.capture3 "#{command}"
+end
+
+When(/^I add check_netio command$/) do
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'check_netio'"	
+  
+  output, error, @status = Open3.capture3 "#{command}"
+end
 
 When(/^I create nagios user and password$/) do
-  command = "ansible-playbook -i inventory.ini --private-key=#{PATHTOPRIVATEKEY} -u ubuntu playbook.main.yml --tags 'password_setup'"	
+  command = "ansible-playbook -i inventory.ini -u ubuntu playbook.main.yml --tags 'password_setup'"	
   
   output, error, @status = Open3.capture3 "#{command}"
 end 

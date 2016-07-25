@@ -2,24 +2,16 @@
 - name: set config directiory
   lineinfile: 
     dest: /usr/local/nagios/etc/nagios.cfg 
-    regexp: "cfg_dir=/usr/local/nagios/etc/servers" 
-    line: "cfg_dir=/usr/local/nagios/etc/servers" 
+    insertafter: "cfg_file=/usr/local/nagios/etc/objects/localhost.cfg" 
+    line: "cfg_file=/usr/local/nagios/etc/objects/{{ hostfilename }}.cfg" 
     state: present
   tags:
     - set_config
 
-- name: check if server config directiory exists
-  command: bash -c "ls /usr/local/nagios/etc/ | grep servers"
-  register: dir_exists
-  ignore_errors: true
+- name: copy host config file
+  template: src={{hostfilename}}.cfg dest=/usr/local/nagios/etc/objects/{{hostfilename}}.cfg force=yes
   tags:
-    - create_config_dir
-
-- name: create server config directiory
-  file: path=/usr/local/nagios/etc/servers state=directory
-  when: dir_exists|failed
-  tags:
-    - create_config_dir
+    - copy_host_config_file
 
 - name: set email address
   lineinfile:
@@ -40,6 +32,54 @@
       }
   tags: 
     - add_check_nrpe
+
+- name: add check_ping command
+  blockinfile:
+    marker: "#{mark} PING command"
+    dest: /usr/local/nagios/etc/objects/commands.cfg
+    block: |
+      define command{
+        command_name check_newrelic_ping
+        command_line $USER1$/check_ping -H {{monitored_server_address}} -w 100.0,20% -c 500.0,80%
+      }
+  tags: 
+    - check_ping
+
+- name: add check_http command
+  blockinfile:
+    marker: "#{mark} Http command"
+    dest: /usr/local/nagios/etc/objects/commands.cfg
+    block: |
+      define command{
+        command_name    check_newrelic_http
+        command_line    $USER1$/check_http -H {{monitored_server_address}}
+        }
+  tags: 
+    - check_http
+
+- name: add check_mem command
+  blockinfile:
+    marker: "#{mark} memory command"
+    dest: /usr/local/nagios/etc/objects/commands.cfg
+    block: |
+      define command{
+        command_name    check_memory_usage
+        command_line    $USER1$/check_mem.sh -w 80 -c 90
+        }
+  tags: 
+    - check_memory
+
+- name: add check_netio command
+  blockinfile:
+    marker: "#{mark} netio command"
+    dest: /usr/local/nagios/etc/objects/commands.cfg
+    block: |
+      define command{
+        command_name    check_netio
+        command_line    $USER1$/check_netio_1.1 -i eth0
+        }
+  tags: 
+    - check_netio
 
 - name: configure apache authentication
   command: bash -c "a2enmod rewrite; a2enmod cgi"

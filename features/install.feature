@@ -70,13 +70,12 @@ Feature: Setup LAMP as Nagios Prerequisite
     And I restart xinetd service
 
   Scenario:
-    Given I set config directory
-    And config directory was set
+    When I set config directory
+    Then config directory should be set
 
   Scenario:
-    When I create server config directory
+    When I copy host config file
     Then it should be successful
-    And server directory should exist
 
   Scenario:
     When I add email to contacts config
@@ -85,6 +84,22 @@ Feature: Setup LAMP as Nagios Prerequisite
 
   Scenario:
     When I add check_nrpe command
+    Then it should be successful
+
+  Scenario:
+    When I add check_ping command
+    Then it should be successful
+
+  Scenario:
+    When I add check_http command 
+    Then it should be successful
+
+  Scenario:
+    When I add check_memory command
+    Then it should be successful
+
+  Scenario:
+    When I add check_netio command
     Then it should be successful
 
   Scenario:
