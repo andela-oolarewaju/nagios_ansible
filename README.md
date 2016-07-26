@@ -37,6 +37,9 @@ Create a `vars.rb file in the `features/step_definitions/ directory and add the 
 PATHTOPRIVATEKEY = ""
 CONTACTEMAIL = ""
 AWSPUBDNS = ""
+NAGIOSPASSWORD = ""
+NAGIOSIP = ""
+HOST = ""
 ```
 
 Then run `cucumber features/install.feature`

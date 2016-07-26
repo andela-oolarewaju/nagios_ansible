@@ -275,6 +275,3 @@ And(/^Current Load metric should exist$/) do
   expect(status.success?).to eq(true)
   expect(output).to include("load")
 end
-
-
-
